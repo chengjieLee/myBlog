@@ -70,6 +70,8 @@
 import { validUsername } from "@/utils/validate";
 import particles from "particles.js";
 import parJson from "./parJson.json";
+import { Message } from 'element-ui'
+
 export default {
   name: "Login",
   data() {
@@ -90,7 +92,7 @@ export default {
     return {
       checked: false,
       loginForm: {
-        username: "admin",
+        username: "xukai",
         password: "111111"
       },
       loginRules: {
@@ -131,9 +133,17 @@ export default {
           this.loading = true;
           this.$store
             .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
+            .then((res) => {
+              console.log('res:', res)
+              if(res.code === 0){
+                console.log(this.redirect);
+                this.$router.push({ path: this.redirect || "/" });
+                this.loading = false;
+              }else {
+                this.loading = false;
+                Message(`${res.msg}`);
+              }
+
             })
             .catch(() => {
               this.loading = false;

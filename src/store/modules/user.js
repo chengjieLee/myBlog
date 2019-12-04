@@ -25,12 +25,20 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
+    // 获取账号密码
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
+        var response = response.data;
+        console.log('response:', response)
+        if(response.code !== 0) {
+          resolve(response)
+        }else {
+          console.log('2')
+          const token = response.token;
+          commit('SET_TOKEN', token)
+          setToken(token)
+          resolve(response)
+        }
       }).catch(error => {
         reject(error)
       })
@@ -41,7 +49,8 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { data } = response
+        let res = response.data;
+        const { data } = res;
 
         if (!data) {
           reject('Verification failed, please Login again.')
