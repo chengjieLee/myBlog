@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '你跟我闹呐',
+  title: 'myBlog',
 
   /**
    * @type {boolean} true | false

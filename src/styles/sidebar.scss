@@ -29,7 +29,6 @@
       overflow-x: hidden !important;
       .el-scrollbar__view {
         height: 100%;
-        border-right: 1px solid #f7f7f7;
       }
     }
 
@@ -93,7 +92,7 @@
       }
       &.is-active {
         background-color: $subMenuHover !important;
-        border-right: 3px solid #2d8cf0;
+        border-right: 2px solid #2d8cf0;
       }
     }
   }
