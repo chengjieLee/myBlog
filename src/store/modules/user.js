@@ -26,6 +26,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     // 获取账号密码
+    // console.log(username, password);
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         var response = response.data;

@@ -86,7 +86,6 @@ export default {
     },
     handleEditChange() {
       this.isSave = false;
-      console.log(this.isSave);
     },
     getHtml() {
       // _axios.get("/dev-api/blog", { params: { user: "xukai" } }).then(res => {
@@ -102,12 +101,12 @@ export default {
       })
         .then(() => {
           this.saveArticle().then(result => {
-            console.log(result);
             if (result.code === 0) {
               this.$message({
                 type: "success",
                 message: result.msg
               });
+              this.content = '';
             } else {
               this.$message({
                 type: "warning",
@@ -133,7 +132,6 @@ export default {
         blogAuthor: this.headForm.author
       };
       return _axios.post("/dev-api/blog/add", params).then(res => {
-        console.log(res.data.msg);
         return res.data;
       });
     }

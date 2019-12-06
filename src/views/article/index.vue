@@ -5,17 +5,17 @@
       <el-menu-item index="2" @click="sortFilter('newest')">最新</el-menu-item>
     </el-menu>
     <section class="article-list">
-      <div class="article-item">
+      <div class="article-item" v-for="blog of articleList">
         <div class="info-row meta-list">
-          <span class="meta-author">xukai</span>
-          <span class="meta-time">18小时前</span>
+          <span class="meta-author">{{blog.author}}</span>
+          <span class="meta-time">{{blog.createTime}}</span>
         </div>
         <div class="info-row title-row">
-          <router-link to='/article'>文章标题</router-link>
+          <router-link :to=" '/article/detail?blogid='+blog.blogId ">{{blog.blogTitle}}</router-link>
         </div>
         <div class="info-row button-row">
-          <el-button class="row-button" icon="el-icon-star-off">1</el-button>
-          <el-button class="row-button" icon="el-icon-chat-line-square">1</el-button>
+          <el-button class="row-button" icon="el-icon-star-off">0</el-button>
+          <el-button class="row-button" icon="el-icon-chat-line-square">0</el-button>
         </div>
       </div>
     </section>
@@ -24,19 +24,24 @@
 
 
 <script>
+import _axios from "axios";
+
 export default {
   name: "ArticleList",
   data() {
     return {
       activeIndex: "1",
-      articleList: [{
-        isStar: false
-      }],
+      articleList: [],
     };
   },
   methods: {
     getArticleList() {
-      this.articleList = [];
+      _axios.get("/dev-api/blog/list").then(res => {
+        this.articleList = res.data.data;
+      });
+    },
+    sortFilter(type) {
+      console.log('search')
     }
   },
   created() {
@@ -89,6 +94,10 @@ export default {
         font-weight: 700;
         height: 46px;
         line-height: 46px;
+        max-width:620px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       .button-row {
         .row-button {
