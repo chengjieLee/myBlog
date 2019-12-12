@@ -6,7 +6,8 @@ const state = {
   token: getToken(),
   name: '',
   avatar: '',
-  roles:[]
+  roles:[],
+  isAdmin: false ,
 }
 
 const mutations = {
@@ -18,6 +19,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ADMIN: (state, bool) => {
+    state.isAdmin = bool;
   }
 }
 
@@ -26,15 +30,12 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     // 获取账号密码
-    // console.log(username, password);
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         var response = response.data;
-        console.log('response:', response)
         if(response.code !== 0) {
           resolve(response)
         }else {
-          console.log('2')
           const token = response.token;
           commit('SET_TOKEN', token)
           setToken(token)
@@ -52,7 +53,6 @@ const actions = {
       getInfo(state.token).then(response => {
         let res = response.data;
         const { data } = res;
-
         if (!data) {
           reject('Verification failed, please Login again.')
         }
@@ -61,6 +61,11 @@ const actions = {
 
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
+        if(data.admin) {
+          commit('SET_ADMIN', true);
+        }else {
+          commit('SET_ADMIN', false);
+        }
         resolve(data)
       }).catch(error => {
         reject(error)

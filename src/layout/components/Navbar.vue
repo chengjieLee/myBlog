@@ -19,6 +19,11 @@
           <a target="_blank" href="https://github.com/chengjieLee">
             <el-dropdown-item>Github</el-dropdown-item>
           </a>
+          <el-dropdown-item v-if="isAdmin">
+            <span style="display:block;">
+              <router-link to="/admin">Control</router-link>
+            </span>
+          </el-dropdown-item>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">Log Out</span>
           </el-dropdown-item>
@@ -41,7 +46,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'isAdmin'
     ])
   },
   methods: {

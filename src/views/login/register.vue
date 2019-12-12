@@ -1,16 +1,16 @@
 <template>
-  <div class="login-container">
+  <div class="register-container">
     <div id="particles"></div>
     <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-      class="login-form"
+      ref="registerForm"
+      :model="registerForm"
+      :rules="registerRules"
+      class="register-form"
       auto-complete="on"
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">登录</h3>
+        <div class="title">注册</div>
       </div>
       <el-form-item prop="username">
         <span class="svg-container">
@@ -18,7 +18,7 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
+          v-model="registerForm.username"
           placeholder="Username"
           name="username"
           type="text"
@@ -32,34 +32,61 @@
           <svg-icon icon-class="password" />
         </span>
         <el-input
-          :key="passwordType"
+          key="1"
           ref="password"
-          v-model="loginForm.password"
+          v-model="registerForm.password"
           :type="passwordType"
           placeholder="Password"
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+      </el-form-item>
+      <el-form-item prop="confirmPassword">
+        <span class="svg-container">
+          <svg-icon icon-class="queren" />
         </span>
+        <el-input
+          key="2"
+          ref="cPassword"
+          v-model="registerForm.confirmPassword"
+          :type="passwordType"
+          placeholder="Confirm Password"
+          name="confirmPassword"
+          tabindex="3"
+          auto-complete="on"
+        />
+      </el-form-item>
+      <el-form-item>
+        <span class="svg-container">
+          <svg-icon icon-class="confirm" />
+        </span>
+        <el-input
+          key="3"
+          ref="captcha"
+          v-model="registerForm.captcha"
+          type="text"
+          placeholder="Enter image code"
+          name="captcha"
+          tabindex="4"
+          auto-complete="on"
+          @keyup.enter.native="handleRegister"
+        />
+        <div class="captImg-box" @click="refreshCaptchaPng">
+          <img :src="captUrl" alt />
+        </div>
       </el-form-item>
       <div class="register-row">
-        <el-checkbox class="remember" v-model="checked">记住密码</el-checkbox>
         <div class="right-box">
-          <span class="forget" @click="forgetPassword">忘记密码</span>
-          <span class="register" @click="linkToRegister">没有账号？注册</span>
+          <span class="to-login" @click="linkToLogin">已有账号，登录</span>
         </div>
       </div>
       <el-button
         :loading="loading"
         type="success"
         style="width:100%;margin-bottom:30px;"
-        @click.native.prevent="handleLogin"
-      >登录</el-button>
-
+        @click.native.prevent="handleRegister"
+      >注册</el-button>
       <div class="tips"></div>
     </el-form>
   </div>
@@ -70,41 +97,60 @@ import { validUsername } from "@/utils/validate";
 import particles from "particles.js";
 import parJson from "./parJson.json";
 import { Message } from "element-ui";
+import _axios from '@/utils/request';
+
 
 export default {
-  name: "Login",
+  name: "register",
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
+        callback(new Error("请输入您的用户名"));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+        callback(new Error("密码小于六位"));
+      } else {
+        callback();
+      }
+    };
+    const validateConfirmPassword = (rule, value, callback) => {
+      if (value !== this.registerForm.password) {
+        callback(new Error("确认密码和密码不符"));
       } else {
         callback();
       }
     };
     return {
       checked: false,
-      loginForm: {
-        username: "chengjie",
-        password: "123456"
+      passwordType: "password",
+      registerForm: {
+        username: "",
+        password: "",
+        confirmPassword: "",
+        captcha: ""
       },
-      loginRules: {
+      registerRules: {
         username: [
           { required: true, trigger: "blur", validator: validateUsername }
         ],
         password: [
           { required: true, trigger: "blur", validator: validatePassword }
+        ],
+        confirmPassword: [
+          {
+            required: true,
+            trigger: "blur",
+            validator: validateConfirmPassword
+          }
         ]
       },
       loading: false,
-      passwordType: "password",
-      redirect: undefined
+      redirect: undefined,
+      captUrl: ""
     };
   },
   watch: {
@@ -116,51 +162,63 @@ export default {
     }
   },
   methods: {
-    forgetPassword() {
-      this.$message({
-        type: 'error',
-        message: '忘就忘了呗，我能怎么办？'
-      })
-    },
-    showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
-      } else {
-        this.passwordType = "password";
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus();
+    linkToLogin() {
+      this.$router.push({
+        path: "/login"
       });
     },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+    refreshCaptchaPng() {
+      this.getCaptchaPng();
+    },
+    handleRegister() {
+      const registerFormData = this.registerForm;
+      this.$refs.registerForm.validate(valid => {
         if (valid) {
           this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(res => {
-              if (res.code === 0) {
-                this.$router.push({ path: this.redirect || "/" });
-                this.loading = false;
-              } else {
-                this.loading = false;
-                Message(`${res.msg}`);
-              }
-            })
-            .catch(() => {
-              this.loading = false;
-            });
+          _axios.post('/register', {
+            registerFormData
+          }).then(res => {
+            this.loading = false;
+            if(res.data.code === 0) {
+              this.$confirm('注册成功，是否进入登录页？','注册成功',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'success'
+              }).then(() => {
+                this.$router.push({
+                  path: '/login'
+                })
+              }).catch(e => {
+                this.$message({
+                  type: 'info',
+                  message: '已取消'
+                })
+              })
+              this.$refs.registerForm.resetFields();
+            }else {
+              this.$message({
+                type: 'error',
+                message: res.data.msg
+              })
+            }
+          }).catch(e => {
+            this.loading = false;
+            console.log(e)
+          })
         } else {
-          console.log("error submit!!");
+          this.$message("error submit!!");
           return false;
         }
       });
     },
-    linkToRegister() {
-      this.$router.push({
-        path: "/register"
+    getCaptchaPng() {
+      _axios.get("/register/captcha").then(res => {
+        this.captUrl = res.data.data.imgUrl;
       });
     }
+  },
+  created() {
+    this.getCaptchaPng();
   },
   mounted() {
     particlesJS("particles", parJson);
@@ -177,13 +235,13 @@ $light_gray: #333;
 $cursor: #456;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
+  .register-container .el-input input {
     color: $cursor;
   }
 }
 
 /* reset element-ui css */
-.login-container {
+.register-container {
   #particles {
     width: 100%;
     height: 100%;
@@ -227,14 +285,14 @@ $bg: #2d3a4b;
 $dark_gray: #444;
 $light_gray: #333;
 
-.login-container {
+.register-container {
   min-height: 100%;
   width: 100%;
   background-image: url("../../assets/images/1.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   overflow: hidden;
-  .login-form {
+  .register-form {
     position: relative;
     width: 460px;
     max-width: 100%;
@@ -252,7 +310,7 @@ $light_gray: #333;
         .forget {
           margin-right: 8px;
           font-size: 14px;
-          color: #555;
+          color: #333;
           cursor: pointer;
           &:hover {
             color: #67c23a;
@@ -260,7 +318,7 @@ $light_gray: #333;
         }
         .register {
           font-size: 14px;
-          color: #555;
+          color: #333;
           cursor: pointer;
           &:hover {
             color: #67c23a;
@@ -269,19 +327,12 @@ $light_gray: #333;
       }
     }
   }
-
-  .tips {
-    font-size: 14px;
-    color: #222;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
+  .captImg-box {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    cursor: pointer;
   }
-
   .svg-container {
     padding: 6px 5px 6px 15px;
     color: $dark_gray;
@@ -292,7 +343,6 @@ $light_gray: #333;
 
   .title-container {
     position: relative;
-
     .title {
       font-size: 26px;
       color: $light_gray;
@@ -300,18 +350,16 @@ $light_gray: #333;
       text-align: center;
       font-weight: bold;
       letter-spacing: 2em;
-      text-indent: 2em;
+      text-indent: 2em
     }
   }
-
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
+  .to-login {
+    font-size: 14px;
+    color: #555;
     cursor: pointer;
-    user-select: none;
+    &:hover {
+      color: #5daf34;
+    }
   }
 }
 </style>

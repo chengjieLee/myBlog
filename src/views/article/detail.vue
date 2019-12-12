@@ -10,7 +10,8 @@
 
 
 <script>
-import _axios from "axios";
+import _axios from '@/utils/request';
+
 
 export default {
   name: "ArticleDetail",
@@ -29,7 +30,7 @@ export default {
   methods: {
     getRenderDetailContent(blogId) {
       _axios
-        .get("/dev-api/blog/detail", { params: { blogId: blogId } })
+        .get("/blog/detail", { params: { blogId: blogId } })
         .then(res => {
           if(res.data.code ===0){
             this.articleContent = res.data.data.blogContent;

@@ -47,7 +47,7 @@
 <script>
 import MarkdownEditor from "@/components/MarkdownEditor";
 import { getEdited, saveEdited } from "@/utils/editSave";
-import _axios from "axios";
+import _axios from '@/utils/request';
 import { getToken } from "@/utils/auth";
 
 const initContent = "";
@@ -131,7 +131,7 @@ export default {
         blogTitle: this.headForm.title,
         blogAuthor: this.headForm.author
       };
-      return _axios.post("/dev-api/blog/add", params).then(res => {
+      return _axios.post("/blog/add", params).then(res => {
         return res.data;
       });
     }

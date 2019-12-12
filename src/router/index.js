@@ -11,19 +11,21 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
-  {
+export const constantRoutes = [{
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
+  {
+    path: '/register',
+    component: () => import('@/views/login/register'),
+    hidden: true
+  },
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
     component: Layout,
@@ -32,7 +34,10 @@ export const constantRoutes = [
       path: 'home',
       name: 'Home',
       component: () => import('@/views/home/index'),
-      meta: { title: '首页', icon: 'dashboard' }
+      meta: {
+        title: '首页',
+        icon: 'dashboard'
+      }
     }]
   },
   {
@@ -43,26 +48,35 @@ export const constantRoutes = [
       path: '/profile',
       name: 'profile',
       component: () => import('@/views/profile/index'),
-      meta: { title: '个人中心', icon: 'user'}
+      meta: {
+        title: '个人中心',
+        icon: 'user'
+      }
     }]
   },
   {
-    path: '/article',
+    path: '',
     component: Layout,
-    meta: {title: 'Blogs'},
+    meta: {
+      title: 'Blogs'
+    },
     redirect: '/article',
-    children:[
-      {
+    children: [{
         path: '/article',
         name: 'Article',
         component: () => import('@/views/article/index'),
-        meta: { title: '文章列表', icon: 'article'}
+        meta: {
+          title: '文章列表',
+          icon: 'article'
+        }
       },
       {
         path: '/article/detail',
         name: 'Detail',
         component: () => import('@/views/article/detail'),
-        meta: { title: '文章详情'},
+        meta: {
+          title: '文章详情'
+        },
         hidden: true
       }
     ]
@@ -70,34 +84,73 @@ export const constantRoutes = [
   {
     path: '/edit',
     component: Layout,
-    children:[
-      {
-        path: '/edit',
-        name: 'Edit',
-        component: () => import('@/views/editor/index'),
-        meta: { title: '文章编辑', icon: 'edit'}
+    children: [{
+      path: '/edit',
+      name: 'Edit',
+      component: () => import('@/views/editor/index'),
+      meta: {
+        title: '文章编辑',
+        icon: 'edit'
       }
-    ]
+    }]
   },
 
   {
     path: 'external-link',
     component: Layout,
-    children: [
-      {
-        path: 'http://47.103.116.19',
-        meta: { title: 'External Link', icon: 'link' }
+    children: [{
+      path: 'http://47.103.116.19',
+      meta: {
+        title: 'External Link',
+        icon: 'link'
       }
-    ]
+    }]
   },
-
+  {
+    path: '/admin',
+    component: Layout,
+    children: [{
+      path: '/admin',
+      name: 'Admin',
+      component: () => import('@/views/admin/index'),
+      meta: {
+        title: 'Control'
+      },
+      hidden: true
+    }]
+  },
+  {
+    path: '/resume',
+    component: Layout,
+    children: [{
+      path: '/resume',
+      name: 'Resume',
+      component: () => import('@/views/resume/index'),
+      meta: {
+        title: 'resume'
+      },
+      hidden: true
+    }]
+  },
+  {
+    path: '/401',
+    hidden: true,
+    component: () => import('@/views/401')
+  },
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constantRoutes
 })
 

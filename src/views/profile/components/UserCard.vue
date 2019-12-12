@@ -2,48 +2,64 @@
   <el-card style="margin-bottom:20px;">
     <div slot="header" class="clearfix">
       <span>About me</span>
+      <span class="edit-resume">
+        <router-link to="/resume">Edit</router-link>
+      </span>
     </div>
-
     <div class="user-profile">
       <div class="box-center">
         <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
           <div>Hello</div>
-          {{ user.role }}
+          <div>我是许凯</div>
         </pan-thumb>
       </div>
       <div class="box-center">
-        <div class="user-name text-center">{{ user.name }}</div>
-        <div class="user-role text-center text-muted">{{ user.role }}</div>
+        <div class="user-name text-center">叫我凯哥</div>
+        <div class="user-role text-center text-muted">
+          <span>
+            职位：
+          </span>
+          <span>
+            前端开发
+          </span>
+          </div>
       </div>
     </div>
-
     <div class="user-bio">
       <div class="user-education user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>学历</span></div>
+        <div class="user-bio-section-header">
+          <svg-icon icon-class="education" />
+          <span>学历</span>
+        </div>
         <div class="user-bio-section-body">
-          <div class="text-muted">
-              本科
-          </div>
+          <div class="text-muted">本科</div>
         </div>
       </div>
-
       <div class="user-skills user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>Skills</span></div>
+        <div class="user-bio-section-header">
+          <svg-icon icon-class="skill" />
+          <span>Skills</span>
+        </div>
         <div class="user-bio-section-body">
           <div class="progress-item">
-            <span>Vue</span>
-            <el-progress :percentage="70" />
+            <span>JavaScript</span>
+            <el-progress :percentage="48" />
           </div>
           <div class="progress-item">
-            <span>JavaScript</span>
-            <el-progress :percentage="18" />
+            <span>Vue</span>
+            <el-progress :percentage="30" />
           </div>
+
           <div class="progress-item">
             <span>Css</span>
             <el-progress :percentage="12" />
           </div>
           <div class="progress-item">
-            <span>ESLint</span>
+            <span>React</span>
+            <el-progress :percentage="10" />
+          </div>
+          <div class="progress-item">
+            <span>Self-study</span>
             <el-progress :percentage="100" status="success" />
           </div>
         </div>
@@ -53,7 +69,7 @@
 </template>
 
 <script>
-import PanThumb from '@/components/PanThumb'
+import PanThumb from "@/components/PanThumb";
 
 export default {
   components: { PanThumb },
@@ -62,15 +78,15 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: '',
-          email: '',
-          avatar: '',
-          roles: ''
-        }
+          name: "",
+          email: "",
+          avatar: "",
+          roles: ""
+        };
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -82,7 +98,10 @@ export default {
 .text-muted {
   color: #777;
 }
-
+.edit-resume {
+  float: right;
+  color: #e6be0d;
+}
 .user-profile {
   .user-name {
     font-weight: bold;

@@ -5,7 +5,7 @@
       <el-menu-item index="2" @click="sortFilter('newest')">最新</el-menu-item>
     </el-menu>
     <section class="article-list">
-      <div class="article-item" v-for="blog of articleList">
+      <div class="article-item" v-for="blog of articleList" :key="blog.blogId">
         <div class="info-row meta-list">
           <span class="meta-author">{{blog.author}}</span>
           <span class="meta-time">{{blog.createTime}}</span>
@@ -24,7 +24,7 @@
 
 
 <script>
-import _axios from "axios";
+import _axios from '@/utils/request';
 
 export default {
   name: "ArticleList",
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     getArticleList() {
-      _axios.get("/dev-api/blog/list").then(res => {
+      _axios.get("/blog/list").then(res => {
         this.articleList = res.data.data;
       });
     },
