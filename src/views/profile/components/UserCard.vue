@@ -38,7 +38,7 @@
       <div class="user-skills user-bio-section">
         <div class="user-bio-section-header">
           <svg-icon icon-class="skill" />
-          <span>Skills</span>
+          <span>技能及掌握程度</span>
         </div>
         <div class="user-bio-section-body">
           <div class="progress-item">

@@ -10,6 +10,7 @@
         :data="uploadData"
       >
         <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+        <img v-else-if="initUrl" :src="initUrl" class="avatar" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
     </div>
@@ -21,6 +22,11 @@ import { mapGetters } from "vuex";
 import { getToken } from "@/utils/auth";
 export default {
   name: "UploadAvatar",
+  props: {
+    initUrl: {
+      type: String
+    }
+  },
   data() {
     const user = getToken();
     return {
@@ -47,15 +53,15 @@ export default {
     beforeAvatarUpload(file) {
       this.uploadData.uid = file.uid;
       const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt5M = file.size / 1024 / 1024 < 5;
       if (!isJPG) {
         this.$message.error("上传头像图片只能是 JPG 格式!");
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+      if (!isLt5M) {
+        this.$message.error("上传头像图片大小不能超过 5MB!");
       }
       this.fileReader(file);
-      return isJPG && isLt2M;
+      return isJPG && isLt5M;
     }
   }
 };
@@ -63,8 +69,12 @@ export default {
 
 <style lang="scss">
 .upload-container {
-  width:180px;
-  height: 180px; 
+  width:100%;
+  height: 100%;
+  .avatar-uploader {
+    height: 100%;
+    width:100%;
+  }
   .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
@@ -78,14 +88,14 @@ export default {
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
+    width: 78px;
+    height:78px;
+    line-height: 78px;
     text-align: center;
   }
   .avatar {
-    width: 178px;
-    height: 178px;
+    width: 78px;
+    height: 78px;
     display: block;
   }
 }
