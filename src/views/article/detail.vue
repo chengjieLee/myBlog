@@ -52,7 +52,7 @@ export default {
 <style lang='scss' scoped>
 .detail-wrapper {
   background: #f4f5f5;
-  min-height: 100vh;
+  min-height: 90vh;
   text-align: center;
   .article-header {
     display: inline-block;

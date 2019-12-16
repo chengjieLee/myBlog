@@ -39,9 +39,12 @@ export default {
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      // 'http://localhost:7654/upload/1575620345582_xukai_Koala.jpg'
       this.imageUrl = res.data.imgUrl;
-      // this.imageUrl = URL.createObjectURL(file.raw);
+      this.$store.dispatch('user/getInfo');
+      this.$message({
+        message: '头像更换成功',
+        type: 'success'
+      })
     },
     fileReader(file) {
       let reader = new FileReader();

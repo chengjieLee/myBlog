@@ -8,19 +8,19 @@
     </div>
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
+        <pan-thumb :image="avatar" :height="'100px'" :width="'100px'" :hoverable="false">
           <div>Hello</div>
-          <div>我是许凯</div>
+          <div>我是{{name}}</div>
         </pan-thumb>
       </div>
       <div class="box-center">
-        <div class="user-name text-center">叫我凯哥</div>
+        <div class="user-name text-center">{{name}}</div>
         <div class="user-role text-center text-muted">
           <span>
             职位：
           </span>
           <span>
-            前端开发
+            {{profession}}
           </span>
           </div>
       </div>
@@ -32,7 +32,7 @@
           <span>学历</span>
         </div>
         <div class="user-bio-section-body">
-          <div class="text-muted">本科</div>
+          <div class="text-muted">{{education}}</div>
         </div>
       </div>
       <div class="user-skills user-bio-section">
@@ -41,22 +41,9 @@
           <span>技能及掌握程度</span>
         </div>
         <div class="user-bio-section-body">
-          <div class="progress-item">
-            <span>JavaScript</span>
-            <el-progress :percentage="48" />
-          </div>
-          <div class="progress-item">
-            <span>Vue</span>
-            <el-progress :percentage="30" />
-          </div>
-
-          <div class="progress-item">
-            <span>Css</span>
-            <el-progress :percentage="12" />
-          </div>
-          <div class="progress-item">
-            <span>React</span>
-            <el-progress :percentage="10" />
+          <div class="progress-item" v-for="skill of skillList">
+            <span>{{skill.skillName}}</span>
+            <el-progress :percentage="skill.skillProgress" />
           </div>
           <div class="progress-item">
             <span>Self-study</span>
@@ -70,22 +57,34 @@
 
 <script>
 import PanThumb from "@/components/PanThumb";
+import _axios from "@/utils/request";
 
 export default {
   components: { PanThumb },
-  props: {
-    user: {
-      type: Object,
-      default: () => {
-        return {
-          name: "",
-          email: "",
-          avatar: "",
-          roles: ""
-        };
-      }
+  data() {
+    return {
+      education: '',
+      name: '',
+      profession: '',
+      skillList: [],
+      avatar: ''
     }
-  }
+  },
+  methods: {
+    getResumeInfo() {
+      _axios.get("/resume").then(res => {
+        const resumeData = res.data.data;
+        this.avatar = resumeData.avatar;
+        this.profession = resumeData.profession;
+        this.name = resumeData.name;
+        this.education = resumeData.education;
+        this.skillList = resumeData.skillList;
+      });
+    }
+  },
+  created() {
+    this.getResumeInfo();
+  },
 };
 </script>
 

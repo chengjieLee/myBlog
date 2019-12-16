@@ -47,18 +47,30 @@
               <el-slider class="temp-slider" :format-tooltip="formatTooltip" v-model="tempSlider"></el-slider>
             </div>
             <div class="handle-button-box">
-              <el-button class="handle-skill-button" @click.native.prevent="cancelAddSkillList">取消</el-button>
-              <el-button class="handle-skill-button">添加</el-button>
+              <el-button
+                class="handle-skill-button"
+                style="color: #888"
+                @click.native.prevent="cancelAddSkillList"
+              >取消</el-button>
+              <el-button class="handle-skill-button" @click.native.prevent="addSkill">添加</el-button>
             </div>
           </div>
+
           <div class="skill-list">
-            <div class="progress-item">
-              <div class="progress-main">
-                <span>JavaScript</span>
-                <el-progress :percentage="48" />
+            <div class="progress-item-box" v-for="skill of skillList" :key="skill.skillName">
+              <div class="skill-modify" v-if="skill.isModify">
+                <el-input class="modify-skill" v-model="skill.skillName"></el-input>
+                <el-slider class="modify-slider" v-model="skill.skillProgress"></el-slider>
+                <el-button class="right-button" @click.native.prevent="triggerModify(skill.skillName)">确定</el-button>
               </div>
-              <div class="edit-progress">
-                <el-button class="right-button">编辑</el-button>
+              <div class="progress-item">
+                <div class="progress-main">
+                  <span>{{skill.skillName}}</span>
+                  <el-progress :percentage="skill.skillProgress" />
+                </div>
+                <div class="edit-progress">
+                  <el-button class="right-button" @click.native.prevent="triggerModify(skill.skillName)">编辑</el-button>
+                </div>
               </div>
             </div>
           </div>
@@ -66,7 +78,10 @@
         </div>
       </el-main>
       <el-footer>
-        <el-button class="save-button" type="primary">保存</el-button>
+        <el-button type="warning">
+          <router-link to="/profile">返回个人中心</router-link>
+        </el-button>
+        <el-button class="save-button" type="primary" @click.native.prevent="saveResume">保存</el-button>
       </el-footer>
     </el-container>
   </div>
@@ -84,18 +99,24 @@ export default {
   data() {
     return {
       tempSkill: "",
-      tempSlider: "",
+      tempSlider: 0,
       addSkillList: false,
       form: {
-        profession: "前端划水",
-        name: "阿凯",
-        education: "本科"
+        profession: "",
+        name: "",
+        education: ""
       },
-      initAvatar:
-        "http://localhost:7654/upload/1576203334831_chengjie_Koala.jpg"
+      initAvatar: "../../assets/images/Default.jpg",
+      skillList: [],
     };
   },
   methods: {
+    triggerModify (skillName) {
+      let targetItem = this.skillList.find(it => {
+          return it.skillName == skillName
+      })
+      targetItem.isModify = !targetItem.isModify;
+    },
     professionFocus() {
       this.$refs.profession.focus();
     },
@@ -130,7 +151,42 @@ export default {
       _axios.get("/resume").then(res => {
         const resumeData = res.data.data;
         this.initAvatar = resumeData.avatar;
-        console.log(res.data.data);
+        this.form.profession = resumeData.profession;
+        this.form.name = resumeData.name;
+        this.form.education = resumeData.education;
+        this.skillList = resumeData.skillList.map(skill => {
+          skill.isModify = false;
+          return skill;
+        });
+      });
+    },
+    addSkill() {
+      let tempSkill = this.tempSkill;
+      let tempProgress = this.tempSlider;
+      if (!tempSkill || !tempProgress) {
+        return;
+      }
+
+      this.skillList.push({
+        skillName: tempSkill,
+        skillProgress: tempProgress
+      });
+      this.cancelAddSkillList();
+    },
+    saveResume() {
+      let resumeBase = {
+        profession: this.form.profession,
+        name: this.form.name,
+        education: this.form.education,
+        skillList: this.skillList
+      };
+      _axios.post("/resume/edit", { resumeBase }).then(res => {
+        if (res.data.code === 0) {
+          this.$message({
+            type: "success",
+            message: "保存成功"
+          });
+        }
       });
     }
   },
@@ -252,8 +308,21 @@ export default {
       }
     }
   }
+  .skill-modify {
+    display: flex;
+    .modify-skill {
+      width: 42%;
+      margin-right:16px;
+    }
+    .modify-slider {
+      width: 40%;
+      margin-right:12px;
+    }
+  }
 }
-
+.skill-modify {
+  width: 120%;
+}
 .save-button {
   margin-left: 405px;
 }
