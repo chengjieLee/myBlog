@@ -14,7 +14,7 @@ if(process.env.NODE_ENV === 'development') {
 }else {
   service = axios.create({
     baseURL: 'http://47.103.116.19:7654', // url = base url + request url
-    withCredentials: true, // send cookies when cross-domain requests
+    // withCredentials: true, // send cookies when cross-domain requests
     timeout: 5000 // request timeout
   })
 }
