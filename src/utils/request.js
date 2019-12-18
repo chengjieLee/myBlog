@@ -4,11 +4,21 @@ import store from '@/store'
 import { getToken } from '@/utils/auth'
 
 // create an axios instance
-const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
-})
+let service = null;
+if(process.env.VUE_APP_BASE_API === 'development') {
+  service = axios.create({
+    baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+    //withCredentials: true, // send cookies when cross-domain requests
+    timeout: 5000 // request timeout
+  })
+}else {
+  service = axios.create({
+    baseURL: 'http://47.103.116.19:7654/', // url = base url + request url
+    withCredentials: true, // send cookies when cross-domain requests
+    timeout: 5000 // request timeout
+  })
+}
+
 
 // request interceptor
 service.interceptors.request.use(
