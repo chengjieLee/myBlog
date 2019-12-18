@@ -90,6 +90,7 @@ export default {
         ...this.editorOptions
       })
       if (this.value) {
+        console.log(this.value)
         this.editor.setValue(this.value)
       }
       this.editor.on('change', () => {

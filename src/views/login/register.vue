@@ -1,5 +1,5 @@
 <template>
-  <div class="register-container">
+  <div class="register-container"> 
     <div id="particles"></div>
     <el-form
       ref="registerForm"
@@ -19,7 +19,7 @@
         <el-input
           ref="username"
           v-model="registerForm.username"
-          placeholder="Username"
+          placeholder="用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -36,7 +36,7 @@
           ref="password"
           v-model="registerForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -51,7 +51,7 @@
           ref="cPassword"
           v-model="registerForm.confirmPassword"
           :type="passwordType"
-          placeholder="Confirm Password"
+          placeholder="确认密码"
           name="confirmPassword"
           tabindex="3"
           auto-complete="on"
@@ -66,7 +66,7 @@
           ref="captcha"
           v-model="registerForm.captcha"
           type="text"
-          placeholder="Enter image code"
+          placeholder="请输入验证码"
           name="captcha"
           tabindex="4"
           auto-complete="on"
@@ -150,7 +150,8 @@ export default {
       },
       loading: false,
       redirect: undefined,
-      captUrl: ""
+      captUrl: "",
+      bgUrl: ``,
     };
   },
   watch: {
@@ -229,10 +230,10 @@ export default {
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 
-$bg: #2d3a4b;
-$dark_gray: #444;
-$light_gray: #333;
-$cursor: #456;
+$bg: #fccffc;
+$dark_gray: #ccc;
+$light_gray: #fff;
+$cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .register-container .el-input input {
@@ -281,9 +282,9 @@ $cursor: #456;
 </style>
 
 <style lang="scss" scoped>
-$bg: #2d3a4b;
-$dark_gray: #444;
-$light_gray: #333;
+$bg: #fff;
+$dark_gray: #fff;
+$light_gray: #fff;
 
 .register-container {
   min-height: 100%;
@@ -307,23 +308,6 @@ $light_gray: #333;
       }
       .right-box {
         float: right;
-        .forget {
-          margin-right: 8px;
-          font-size: 14px;
-          color: #333;
-          cursor: pointer;
-          &:hover {
-            color: #67c23a;
-          }
-        }
-        .register {
-          font-size: 14px;
-          color: #333;
-          cursor: pointer;
-          &:hover {
-            color: #67c23a;
-          }
-        }
       }
     }
   }
@@ -355,7 +339,7 @@ $light_gray: #333;
   }
   .to-login {
     font-size: 14px;
-    color: #555;
+    color: #fef;
     cursor: pointer;
     &:hover {
       color: #5daf34;

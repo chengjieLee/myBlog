@@ -171,10 +171,10 @@ export default {
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 
-$bg: #2d3a4b;
-$dark_gray: #444;
-$light_gray: #333;
-$cursor: #456;
+$bg: #fccffc;
+$dark_gray: #ccc;
+$light_gray: #fff;
+$cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -217,16 +217,19 @@ $cursor: #456;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    color: #454545;
+    color: #fff;
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$bg: #2d3a4b;
-$dark_gray: #444;
-$light_gray: #333;
-
+// $bg: #2d3a4b;
+// $dark_gray: #444;
+// $light_gray: #333;
+$bg: #fff;
+$dark_gray: #fff;
+$light_gray: #fff;
+// $cursor: #987;
 .login-container {
   min-height: 100%;
   width: 100%;
@@ -246,13 +249,14 @@ $light_gray: #333;
       overflow: hidden;
       .remember {
         margin-left: 8px;
+        color: #eee;
       }
       .right-box {
         float: right;
         .forget {
           margin-right: 8px;
           font-size: 14px;
-          color: #555;
+          color: #eee;
           cursor: pointer;
           &:hover {
             color: #67c23a;
@@ -260,24 +264,12 @@ $light_gray: #333;
         }
         .register {
           font-size: 14px;
-          color: #555;
+          color: #eee;
           cursor: pointer;
           &:hover {
             color: #67c23a;
           }
         }
-      }
-    }
-  }
-
-  .tips {
-    font-size: 14px;
-    color: #222;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
       }
     }
   }

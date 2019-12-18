@@ -1,17 +1,17 @@
 <template>
-  <div class="detail-wrapper">
+  <div class="detail-wrapper ">
     <header class="article-header">
       <h1 class="article-title">{{articleTitle}}</h1>
       <p class="article-author">{{author}}</p>
     </header>
-    <div class="article-content" v-html="articleContent"></div>
+    <div class="article-content tui-editor-contents" v-html="articleContent" ></div>
   </div>
 </template>
 
 
 <script>
 import _axios from '@/utils/request';
-
+import 'tui-editor/dist/tui-editor-contents.css';
 
 export default {
   name: "ArticleDetail",
@@ -55,6 +55,7 @@ export default {
   min-height: 90vh;
   text-align: center;
   .article-header {
+    box-sizing: border-box;
     display: inline-block;
     background: #fff;
     margin-top: 22px;
@@ -73,6 +74,7 @@ export default {
     }
   }
   .article-content {
+    box-sizing: border-box;
     padding: 10px;
     text-align: left;
     display: inline-block;

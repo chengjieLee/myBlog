@@ -1,27 +1,11 @@
 <template>
   <div class="components-container">
-    <div class="edit-button">
-      <el-button style="margin-top:0px;" icon="el-icon-edit" @click="showHeaderConfig">编辑Title</el-button>
-      <el-button
-        style="margin-top:0px;"
-        type="primary"
-        icon="el-icon-edit-outline"
-        @click="saveEdit"
-      >保存</el-button>
-      <el-dialog title="标题设置" :visible.sync="showHeader">
-        <el-form :model="headForm">
-          <el-form-item label="文章标题" label-width="80px">
-            <el-input v-model="headForm.title" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="作者" :label-width="'80px'">
-            <el-input v-model="headForm.author" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="handleClearInput">重 置</el-button>
-          <el-button type="primary" @click="showHeader = false">确 定</el-button>
-        </div>
-      </el-dialog>
+    <div class="title-set-box">
+      <el-form :model="headForm">
+        <el-form-item label="文章标题" label-width="80px">
+          <el-input v-model="headForm.title" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="editor-container">
       <el-alert :closable="false" type="success" />
@@ -29,26 +13,25 @@
         ref="markdownEditor"
         v-model="content"
         :language="language"
-        height="700px"
+        height="720px"
         @editChange="handleEditChange"
       />
     </div>
-
-    <el-button
-      style="margin-top:0px;margin-left:12px"
-      type="primary"
-      icon="el-icon-document"
-      @click="getHtml"
-    >HTML 预览</el-button>
-    <div v-html="html" />
+    <div class="edit-button">
+      <el-button type="primary" icon="el-icon-edit-outline" @click="modifyEdit" v-if="isModify">修改</el-button>
+      <el-button type="primary" icon="el-icon-edit-outline" @click="saveEdit" v-else>保存</el-button>
+    </div>
   </div>
 </template>
 
 <script>
 import MarkdownEditor from "@/components/MarkdownEditor";
 import { getEdited, saveEdited } from "@/utils/editSave";
-import _axios from '@/utils/request';
+import _axios from "@/utils/request";
 import { getToken } from "@/utils/auth";
+import "tui-editor/dist/tui-editor-contents.css";
+import "tui-editor/dist/tui-editor.css";
+import "codemirror/lib/codemirror.css";
 
 const initContent = "";
 const content = getEdited() || initContent;
@@ -64,11 +47,12 @@ export default {
         zh: "zh_CN"
       },
       isSave: true,
-      showHeader: false,
       headForm: {
         title: "",
-        author: ""
-      }
+        author: getToken()
+      },
+      isModify: false,
+      blogId: null
     };
   },
   computed: {
@@ -81,16 +65,13 @@ export default {
       this.headForm.title = "";
       this.headForm.author = "";
     },
-    showHeaderConfig() {
-      this.showHeader = !this.showHeader;
-    },
     handleEditChange() {
       this.isSave = false;
     },
+    setHtml(shouldSetHtml) {
+      this.$refs.markdownEditor.setHtml(shouldSetHtml);
+    },
     getHtml() {
-      // _axios.get("/dev-api/blog", { params: { user: "xukai" } }).then(res => {
-      //   this.html = res.data.data[1].blogContent;
-      // });
       this.html = this.$refs.markdownEditor.getHtml();
     },
     saveEdit() {
@@ -106,7 +87,8 @@ export default {
                 type: "success",
                 message: result.msg
               });
-              this.content = '';
+              this.content = "";
+              this.headForm.title = "";
             } else {
               this.$message({
                 type: "warning",
@@ -124,6 +106,38 @@ export default {
       this.isSave = true;
       saveEdited("");
     },
+    modifyEdit() {
+      this.$confirm("是否修改此文档？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "success"
+      })
+        .then(() => {
+          this.modifyArticle().then(result => {
+            if (result.code === 0) {
+              this.$message({
+                type: "success",
+                message: result.msg
+              });
+              this.content = "";
+              this.headForm.title = "";
+            } else {
+              this.$message({
+                type: "warning",
+                message: result.msg
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消修改"
+          });
+        });
+      this.isSave = true;
+      saveEdited("");
+    },
     saveArticle() {
       let params = {
         user: getToken(),
@@ -134,6 +148,34 @@ export default {
       return _axios.post("/blog/add", params).then(res => {
         return res.data;
       });
+    },
+    modifyArticle() {
+      if(!this.blogId ||!this.headForm.title) return;
+      let params = {
+        user: getToken(),
+        blogContent: this.$refs.markdownEditor.getHtml(),
+        blogTitle: this.headForm.title,
+        blogAuthor: this.headForm.author,
+        blogId: this.blogId
+      };
+      return _axios.post("/blog/modify", params).then(res => {
+        return res.data;
+      });
+    },
+    getArticleHtml(blogId) {
+      _axios
+        .get("/blog/detail", {
+          params: {
+            blogId
+          }
+        })
+        .then(res => {
+          if (res.data.code === 0) {
+            let shouldSetHtml = res.data.data.blogContent;
+            this.headForm.title = res.data.data.blogTitle;
+            this.setHtml(shouldSetHtml);
+          }
+        });
     }
   },
   mounted() {
@@ -144,25 +186,32 @@ export default {
         saveEdited(that.content);
       }
     };
-  },
-  beforeDestroy() {
-    // if (!this.isSave) {
-    //   const shouldSave = confirm("是否保存内容");
-    //   shouldSave ? this.saveEdit() : null;
-    // }
+    const { blogId } = this.$route.query;
+    if (blogId) {
+      this.isModify = true;
+      this.blogId = blogId;
+      this.getArticleHtml(blogId);
+    } else {
+      this.isModify = false;
+      this.blogId = null
+    }
   }
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .edit-button {
-  background-color: #f0f9eb;
-  height: 55px;
-  padding-left: 22px;
-  padding-top: 15px;
+  text-align: right;
+  padding-right: 92px;
+  padding-top: 10px;
+}
+.title-set-box {
+  margin-top: 12px;
+  width: 600px;
+  padding-left: 18px;
 }
 .editor-container {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 .tag-title {
   margin-bottom: 5px;
