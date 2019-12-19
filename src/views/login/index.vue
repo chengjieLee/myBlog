@@ -233,7 +233,7 @@ $light_gray: #fff;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-image: url("../../assets/images/1.jpg");
+  background-image: url("http://localhost:7654/upload/background.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   overflow: hidden;
