@@ -233,7 +233,7 @@ $light_gray: #fff;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-image: url("http://localhost:7654/upload/background.jpg");
+  background-image: url("http://47.103.116.19:7654/upload/background.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   overflow: hidden;
@@ -259,7 +259,7 @@ $light_gray: #fff;
           color: #eee;
           cursor: pointer;
           &:hover {
-            color: #67c23a;
+            color: #dde01c;;
           }
         }
         .register {
@@ -267,7 +267,7 @@ $light_gray: #fff;
           color: #eee;
           cursor: pointer;
           &:hover {
-            color: #67c23a;
+            color: #dde01c;;
           }
         }
       }
