@@ -106,7 +106,7 @@ export default {
         name: "",
         education: ""
       },
-      initAvatar: "../../assets/images/Default.jpg",
+      initAvatar: "http://47.103.116.19:7654/upload/Default.jpg",
       skillList: [],
     };
   },

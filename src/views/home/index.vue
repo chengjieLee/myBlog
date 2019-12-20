@@ -4,7 +4,12 @@
       <div class="myskill-box">
         <my-skill />
       </div>
-      <div class="my***-box">我的技能</div>
+      <div class="my***-box"></div>
+    </div>
+    <div class="content-row row-2">
+      <div class="heat-box">
+        <my-create></my-create>
+      </div>
     </div>
   </div>
 </template>
@@ -12,9 +17,13 @@
 
 <script>
 import MySkill from "./components/MySkill";
+import MyCreate from "./components/MyCreate";
+
 export default {
+  name: 'Home',
   components: {
-    MySkill
+    MySkill,
+    MyCreate
   }
 };
 </script>

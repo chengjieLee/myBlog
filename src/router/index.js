@@ -99,9 +99,9 @@ export const constantRoutes = [{
     path: 'external-link',
     component: Layout,
     children: [{
-      path: 'http://47.103.116.19',
+      path: 'http://47.103.116.19:8081',
       meta: {
-        title: 'External Link',
+        title: 'MyMusic Link',
         icon: 'link'
       }
     }]
@@ -109,9 +109,10 @@ export const constantRoutes = [{
   {
     path: '/admin',
     component: Layout,
+    name: 'Admin',
     children: [{
       path: '/admin',
-      name: 'Admin',
+      name: 'Admin_1',
       component: () => import('@/views/admin/index'),
       meta: {
         title: 'Control'

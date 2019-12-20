@@ -3,7 +3,7 @@
     <div>
       <el-upload
         class="avatar-uploader"
-        :action="upAction"
+        action="/dev-api/upload/image"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
@@ -20,12 +20,6 @@
 <script>
 import { mapGetters } from "vuex";
 import { getToken } from "@/utils/auth";
-let upAction = ''
-if(process.env.NODE_ENV === 'development') {
-  upAction = 'http://localhost:7654/upload/image'
-}else {
-  upAction = 'http://47.103.116.19:7654/upload/image'
-}
 export default {
   name: "UploadAvatar",
   props: {
@@ -40,8 +34,7 @@ export default {
       uploadData: {
         user: user,
         uid: ""
-      },
-      upAction: upAction
+      }
     };
   },
   methods: {

@@ -176,6 +176,19 @@ export default {
             this.setHtml(shouldSetHtml);
           }
         });
+    },
+    async getBlogAuthor(blogId) {
+    await _axios.get('/blog/permission', {
+        params: {
+          id: blogId
+        }
+      }).then(res => {
+        if(res.data.code !== 0) {
+          this.$router.push({
+            path: '/401'
+          })
+        }
+      })
     }
   },
   mounted() {
@@ -190,6 +203,7 @@ export default {
     if (blogId) {
       this.isModify = true;
       this.blogId = blogId;
+      this.getBlogAuthor(blogId);
       this.getArticleHtml(blogId);
     } else {
       this.isModify = false;
