@@ -201,10 +201,12 @@ export default {
                 type: 'error',
                 message: res.data.msg
               })
+              this.getCaptchaPng();
             }
           }).catch(e => {
             this.loading = false;
-            console.log(e)
+            this.$message(e);
+            this.getCaptchaPng();
           })
         } else {
           this.$message("error submit!!");

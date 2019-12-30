@@ -37,7 +37,7 @@ export default {
   components: { UserCard, Product, Experience, Account },
   data() {
     return {
-      activeTab: "account"
+      activeTab: "experience"
     };
   },
   created() {

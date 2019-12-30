@@ -134,6 +134,19 @@ export const constantRoutes = [{
     }]
   },
   {
+    path: '/experienceEdit',
+    component: Layout,
+    children: [{
+      path: '/experienceEdit/:flag',
+      name: 'ExperienceEdit',
+      component: () => import('@/views/profile/experience'),
+      meta: {
+        title: '经历编辑'
+      },
+      hidden: true
+    }]
+  },
+  {
     path: '/401',
     hidden: true,
     component: () => import('@/views/401')

@@ -29,7 +29,7 @@ export default {
         visualMap: {
           show: false,
           min: 0,
-          max: 100,
+          max: 120,
           inRange: {
             colorLightness: [0, 1]
           }
