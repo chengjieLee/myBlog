@@ -9,7 +9,7 @@
           <el-card>
             <h4>{{exp.name}}</h4>
             <p v-if="exp.workPosition">{{exp.workPosition}}</p>
-            <p>王小虎 提交于 2018/4/12 20:46</p>
+            <p>{{exp.description}}</p>
           </el-card>
         </el-timeline-item>
       </el-timeline>

@@ -102,7 +102,12 @@
               </el-dialog>
               <div class="experience-list">
                 <div class="experience-item" v-for="exp of experienceList">
-                  <el-button class="edit-button" @click="editItem(exp.id)">编辑</el-button>
+                  <div class="edit-button-box" >
+                    <el-button class="edit-button" @click="editItem(exp.id)">
+                      编辑
+                    </el-button>
+                    <el-button class="edit-button">删除</el-button>
+                  </div>
                   <h2>{{exp.name}}</h2>
                   <div class="sub-time">{{exp.timeRange}}</div>
                   <div class="work-position">{{exp.workPosition}}</div>
@@ -310,10 +315,13 @@ export default {
 .experience-item {
   position: relative;
 }
-.edit-button {
+.edit-button-box {
   position: absolute;
-  border: none;
-  right: 12px;
+  right: 2px;
   top: -6px;
+  .edit-button {
+    border: none;
+  }
 }
+
 </style>
