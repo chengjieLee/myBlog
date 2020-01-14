@@ -3,7 +3,7 @@
     <div>
       <el-upload
         class="avatar-uploader"
-        action="/dev-api/upload/image"
+        action="http://47.103.116.19:7654/upload/image"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
