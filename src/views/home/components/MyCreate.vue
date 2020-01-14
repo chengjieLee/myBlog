@@ -7,7 +7,7 @@
 
 
 <script>
-import echarts from "echarts";
+import echarts from "@/components/Echarts";
 import _axios from "@/utils/request";
 
 export default {

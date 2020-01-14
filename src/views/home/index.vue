@@ -4,13 +4,16 @@
       <div class="myskill-box">
         <my-skill />
       </div>
-      <div class="my***-box"></div>
+      <div class="my***-box">
+        不知道该放些啥，回头再说
+      </div>
     </div>
     <div class="content-row row-2">
       <div class="heat-box">
         <my-create></my-create>
       </div>
     </div>
+
   </div>
 </template>
 
