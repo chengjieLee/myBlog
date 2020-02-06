@@ -1,6 +1,7 @@
 <template>
   <div class="upload-container">
     <div>
+      <!-- action="http://47.103.116.19:7654/upload/image"  -->
       <el-upload
         class="avatar-uploader"
         action="http://47.103.116.19:7654/upload/image"

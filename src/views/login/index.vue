@@ -91,7 +91,7 @@ export default {
     return {
       checked: false,
       loginForm: {
-        username: "xukai",
+        username: "test",
         password: "123456"
       },
       loginRules: {
