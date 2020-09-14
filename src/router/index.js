@@ -29,34 +29,6 @@ export const constantRoutes = [{
   {
     path: '/',
     component: Layout,
-    redirect: '/home',
-    children: [{
-      path: 'home',
-      name: 'Home',
-      component: () => import('@/views/home/index'),
-      meta: {
-        title: '首页',
-        icon: 'dashboard'
-      }
-    }]
-  },
-  {
-    path: '/user',
-    component: Layout,
-    redirect: '/user/profile',
-    children: [{
-      path: '/profile',
-      name: 'profile',
-      component: () => import('@/views/profile/index'),
-      meta: {
-        title: '个人中心',
-        icon: 'user'
-      }
-    }]
-  },
-  {
-    path: '',
-    component: Layout,
     meta: {
       title: 'Blogs'
     },
@@ -82,6 +54,35 @@ export const constantRoutes = [{
     ]
   },
   {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/profile',
+    children: [{
+      path: '/profile',
+      name: 'profile',
+      component: () => import('@/views/profile/index'),
+      meta: {
+        title: '个人中心',
+        icon: 'user'
+      }
+    }]
+  },
+  {
+    path: '',
+    component: Layout,
+    redirect: '/home',
+    children: [{
+      path: '/home',
+      name: 'Home',
+      component: () => import('@/views/home/index'),
+      meta: {
+        title: '图表信息',
+        icon: 'dashboard'
+      }
+    }]
+  },
+
+  {
     path: '/edit',
     component: Layout,
     children: [{
@@ -94,18 +95,17 @@ export const constantRoutes = [{
       }
     }]
   },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [{
-      path: 'http://47.103.116.19:8081',
-      meta: {
-        title: 'MyMusic Link',
-        icon: 'link'
-      }
-    }]
-  },
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [{
+  //     path: 'http://47.103.116.19:8081',
+  //     meta: {
+  //       title: 'MyMusic Link',
+  //       icon: 'link'
+  //     }
+  //   }]
+  // },
   {
     path: '/admin',
     component: Layout,
