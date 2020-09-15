@@ -37,7 +37,7 @@ export default {
   components: { UserCard, Product, Experience, Account },
   data() {
     return {
-      activeTab: "experience"
+      activeTab: "account"
     };
   },
   created() {
@@ -46,3 +46,13 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.app-container {
+  height: 100%;
+  .el-tabs__content {
+    height: calc(100vh - 188px);
+    overflow: auto;
+  }
+}
+
+</style>

@@ -35,7 +35,6 @@ import "codemirror/lib/codemirror.css";
 
 const initContent = "";
 const content = getEdited() || initContent;
-
 export default {
   name: "Edit",
   components: { MarkdownEditor },
@@ -178,7 +177,7 @@ export default {
         });
     },
     async getBlogAuthor(blogId) {
-    await _axios.get('/blog/permission', {
+      await _axios.get('/blog/permission', {
         params: {
           id: blogId
         }
@@ -209,6 +208,9 @@ export default {
       this.isModify = false;
       this.blogId = null
     }
+  },
+  beforeDestroy() {
+    saveEdited("");
   }
 };
 </script>

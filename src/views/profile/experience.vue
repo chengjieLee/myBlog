@@ -7,111 +7,28 @@
         </el-col>
         <el-col :span="18" :xs="24">
           <el-card class="right-card">
-            <h1 class="edit-title">{{editTitle}}</h1>
+            <h1 class="edit-title">{{ editTitle }}</h1>
             <div class="save-button">
-              <el-button type="danger" @click="dialogVisible = true">新增</el-button>
+              <el-button type="danger" @click="dialogVisible = true"
+                >新增</el-button
+              >
             </div>
 
             <div class="experience-container">
-              <el-dialog
-                title
-                :visible.sync="dialogVisible"
-                width="40%"
-                :before-close="handleClose"
-              >
-                <div class="experience-new">
-                  <div class="item-row">
-                    <label class="experience-title">{{pageName=='work' ? '工作公司名称': '项目名称'}}</label>
-                    <el-input v-model="newForm.name" class="my-el-input"></el-input>
-                  </div>
-                  <div class="item-row">
-                    <label>时间范围：</label>
-                    <el-date-picker
-                      class="my-el-input datepicker"
-                      v-model="newForm.timeRange"
-                      type="daterange"
-                      format="yyyy-MM-dd"
-                      value-format="yyyy-MM-dd"
-                      range-separator="至"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期"
-                    ></el-date-picker>
-                  </div>
-                  <div class="item-row" v-if="pageName==='work'">
-                    <label>公司职位</label>
-                    <el-input v-model="newForm.workPosition" class="my-el-input"></el-input>
-                  </div>
-                  <div class="item-description">
-                    <div class="description-label">{{pageName=='work' ?'岗位描述:': '项目描述:'}}</div>
-                    <el-input
-                      v-model="newForm.description"
-                      type="textarea"
-                      :rows="6"
-                      placeholder="请输入内容"
-                    ></el-input>
-                  </div>
-                </div>
-                <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogVisible = false">取 消</el-button>
-                  <el-button type="primary" @click="handleAddExperience">确 定</el-button>
-                </span>
-              </el-dialog>
-
-              <el-dialog
-                title
-                :visible.sync="dialogVisible2"
-                width="40%"
-                :before-close="handleCloseEdit"
-              >
-                <div class="experience-new">
-                  <div class="item-row">
-                    <label class="experience-title">{{pageName=='work' ? '工作公司名称': '项目名称'}}</label>
-                    <el-input v-model="editForm.name" class="my-el-input"></el-input>
-                  </div>
-                  <div class="item-row">
-                    <label>时间范围：</label>
-                    <el-date-picker
-                      class="my-el-input datepicker"
-                      v-model="editForm.timeRange"
-                      type="daterange"
-                      format="yyyy-MM-dd"
-                      value-format="yyyy-MM-dd"
-                      range-separator="至"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期"
-                    ></el-date-picker>
-                  </div>
-                  <div class="item-row" v-if="pageName==='work'">
-                    <label>公司职位</label>
-                    <el-input v-model="editForm.workPosition" class="my-el-input"></el-input>
-                  </div>
-                  <div class="item-description">
-                    <div class="description-label">{{pageName=='work' ?'岗位描述:': '项目描述:'}}</div>
-                    <el-input
-                      v-model="editForm.description"
-                      type="textarea"
-                      :rows="6"
-                      placeholder="请输入内容"
-                    ></el-input>
-                  </div>
-                </div>
-                <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogVisible2 = false">取 消</el-button>
-                  <el-button type="primary" @click="handleEditExperience">确 定</el-button>
-                </span>
-              </el-dialog>
               <div class="experience-list">
                 <div class="experience-item" v-for="exp of experienceList">
-                  <div class="edit-button-box" >
+                  <div class="edit-button-box">
                     <el-button class="edit-button" @click="editItem(exp.id)">
                       编辑
                     </el-button>
                     <el-button class="edit-button">删除</el-button>
                   </div>
-                  <h2>{{exp.name}}</h2>
-                  <div class="sub-time">{{exp.timeRange}}</div>
-                  <div class="work-position">{{exp.workPosition}}</div>
-                  <div class="experienve-description">{{exp.description}}</div>
+                  <h2>{{ exp.name }}</h2>
+                  <div class="sub-time">{{ exp.timeRange }}</div>
+                  <div class="work-position">{{ exp.workPosition }}</div>
+                  <div class="experienve-description">
+                    {{ exp.description }}
+                  </div>
                   <el-divider></el-divider>
                 </div>
               </div>
@@ -123,6 +40,110 @@
         </el-col>
       </el-row>
     </div>
+    <!-- 新增经历 -->
+    <el-dialog
+      title
+      :visible.sync="dialogVisible"
+      width="40%"
+      :before-close="handleClose"
+    >
+      <div class="experience-new">
+        <div class="item-row">
+          <label class="experience-title">{{
+            pageName == "work" ? "工作公司名称" : "项目名称"
+          }}</label>
+          <el-input v-model="newForm.name" class="my-el-input"></el-input>
+        </div>
+        <div class="item-row">
+          <label>时间范围：</label>
+          <el-date-picker
+            class="my-el-input datepicker"
+            v-model="newForm.timeRange"
+            type="daterange"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          ></el-date-picker>
+        </div>
+        <div class="item-row" v-if="pageName === 'work'">
+          <label>公司职位</label>
+          <el-input
+            v-model="newForm.workPosition"
+            class="my-el-input"
+          ></el-input>
+        </div>
+        <div class="item-description">
+          <div class="description-label">
+            {{ pageName == "work" ? "岗位描述:" : "项目描述:" }}
+          </div>
+          <el-input
+            v-model="newForm.description"
+            type="textarea"
+            :rows="6"
+            placeholder="请输入内容"
+          ></el-input>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleAddExperience">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 修改经历 -->
+    <el-dialog
+      title
+      :visible.sync="dialogVisible2"
+      width="40%"
+      :before-close="handleCloseEdit"
+    >
+      <div class="experience-new">
+        <div class="item-row">
+          <label class="experience-title">{{
+            pageName == "work" ? "工作公司名称" : "项目名称"
+          }}</label>
+          <el-input v-model="editForm.name" class="my-el-input"></el-input>
+        </div>
+        <div class="item-row">
+          <label>时间范围：</label>
+          <el-date-picker
+            class="my-el-input datepicker"
+            v-model="editForm.timeRange"
+            type="daterange"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          ></el-date-picker>
+        </div>
+        <div class="item-row" v-if="pageName === 'work'">
+          <label>公司职位</label>
+          <el-input
+            v-model="editForm.workPosition"
+            class="my-el-input"
+          ></el-input>
+        </div>
+        <div class="item-description">
+          <div class="description-label">
+            {{ pageName == "work" ? "岗位描述:" : "项目描述:" }}
+          </div>
+          <el-input
+            v-model="editForm.description"
+            type="textarea"
+            :rows="6"
+            placeholder="请输入内容"
+          ></el-input>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible2 = false">取 消</el-button>
+        <el-button type="primary" @click="handleEditExperience"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -153,7 +174,8 @@ export default {
       },
       dialogVisible: false,
       dialogVisible2: false,
-      experienceList: []
+      experienceList: [],
+      editId: null // 当前修改的经历id
     };
   },
   created() {
@@ -177,26 +199,46 @@ export default {
     },
     editItem(id) {
       // 发送请求  修改newForm
+      this.editId = id;
       _axios
         .get("/resume/experienceList", {
           params: { id: id, pagename: this.pageName }
         })
         .then(res => {
           const itemData = res.data.data;
-          this.editForm.timeRange = itemData.timeRange.split(' ~ ');
+          this.editForm.timeRange = itemData.timeRange.split(" ~ ");
           this.editForm.name = itemData.name;
-          this.editForm.workPosition = itemData.workPosition || '';
+          this.editForm.workPosition = itemData.workPosition || "";
           this.editForm.description = itemData.description;
           this.dialogVisible2 = true;
           // 弄个新dialog
         });
     },
+    // 编辑工作经历
     handleEditExperience() {
       // 根据 editForm更新
-      this.editForm.name = '';
-      this.editForm.timeRange = ["", ""];
-      this.editForm.workPosition ="";
-      this.editForm.description=""
+      let postData = {
+        experienceId: this.editId,
+        pageName: this.pageName,
+        timeRange:
+          this.editForm.timeRange[0] + " ~ " + this.editForm.timeRange[1],
+        name: this.editForm.name,
+        workPosition: this.editForm.workPosition,
+        description: this.editForm.description
+      };
+      _axios
+        .post("/resume/editExperience", { experienceBase: postData })
+        .then(res => {
+          const data = res.data;
+          if (data.code == 0) {
+            this.editForm.name = "";
+            this.editForm.timeRange = ["", ""];
+            this.editForm.workPosition = "";
+            this.editForm.description = "";
+            this.dialogVisible2 = false;
+            this.getExperienceData();
+          }
+        });
     },
     handleClose() {
       this.dialogVisible = false;
@@ -266,26 +308,7 @@ export default {
 .experience-container {
   margin-top: 22px;
   padding: 10px 80px;
-  .item-row {
-    display: flex;
-    height: 60px;
-    line-height: 60px;
-    label {
-      display: inline-block;
-      width: 200px;
-      font-size: 14px;
-      font-weight: 400;
-    }
 
-    .my-el-input {
-      width: 410px;
-      // display: inline-block
-      &.datepicker {
-        position: relative;
-        top: 10px;
-      }
-    }
-  }
   .item-description {
     margin-top: 10px;
     .description-label {
@@ -312,6 +335,26 @@ export default {
     font-size: 14px;
   }
 }
+.item-row {
+  display: flex;
+  height: 60px;
+  line-height: 60px;
+  label {
+    display: inline-block;
+    width: 200px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .my-el-input {
+    width: 410px;
+    // display: inline-block
+    &.datepicker {
+      position: relative;
+      top: 10px;
+    }
+  }
+}
 .experience-item {
   position: relative;
 }
@@ -323,5 +366,4 @@ export default {
     border: none;
   }
 }
-
 </style>

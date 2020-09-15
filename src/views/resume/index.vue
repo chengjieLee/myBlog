@@ -33,6 +33,12 @@
           <el-button class="right-button" @click.native.prevent="professionFocus">修改</el-button>
           <el-divider></el-divider>
         </div>
+        <div class="profession-box">
+          <label class="github-title">github</label>
+          <el-input class="right-input" ref="github" v-model="form.github" type="text"></el-input>
+          <el-button class="right-button" @click.native.prevent="githubFocus">修改</el-button>
+          <el-divider></el-divider>
+        </div>
         <div class="skill-box">
           <label class="skill-title">技能</label>
           <span style="width:300px;display:inline-block;"></span>
@@ -104,7 +110,8 @@ export default {
       form: {
         profession: "",
         name: "",
-        education: ""
+        education: "",
+        github: '',
       },
       initAvatar: "http://47.103.116.19:7654/upload/Default.jpg",
       skillList: [],
@@ -125,6 +132,10 @@ export default {
     },
     educationFocus() {
       this.$refs.education.focus();
+    },
+    githubFocus() {
+      this.$refs.github.focus();
+
     },
     showAddSkillList() {
       this.addSkillList = !this.addSkillList;
@@ -178,6 +189,7 @@ export default {
         profession: this.form.profession,
         name: this.form.name,
         education: this.form.education,
+        github: this.form.github,
         skillList: this.skillList
       };
       _axios.post("/resume/edit", { resumeBase }).then(res => {
@@ -225,14 +237,16 @@ export default {
   &.tip2 {
     position: absolute;
     bottom: 38px;
-    left: 184px;
+    left: 206px;
   }
 }
 .edit-main {
   label {
     font-size: 14px;
     font-weight: 500;
-    margin-right: 66px;
+    margin-right: 36px;
+    display: inline-block;
+    width: 80px;
     vertical-align: middle;
   }
   .right-input {
