@@ -62,6 +62,9 @@
 
       <div class="tips"></div>
     </el-form>
+    <div class="my-AQ">
+      <a href="http://beian.miit.gov.cn/" target="_blank">皖ICP备2020016204号</a>
+    </div>
   </div>
 </template>
 
@@ -184,6 +187,15 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  .my-AQ {
+    color: #fff;
+    position: absolute;
+    left: 50%;
+    bottom: 50px;
+    transform: translateX(-50%);
+    font-size: 14px;
+  }
+  
   #particles {
     width: 100%;
     height: 100%;
